@@ -7,3 +7,16 @@ canvas {
   width: 100vw;
   height: 100vh;
 }
+
+.play {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+}
+
+.stop {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
