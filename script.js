@@ -123,6 +123,7 @@ var isPlaying = false;
     brownNoise.connect(audioContext.destination);
     setTimeout(() => {
       stopBrownNoise();
+      isPlaying = false;
     }, soundLength);
   }
 
