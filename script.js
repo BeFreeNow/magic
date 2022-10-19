@@ -40,9 +40,12 @@ function personalize(userName = 'Vasili Ivanov', date = initialDate) {
   mainContext.fillStyle = 'white';
   mainContext.fillText(`Personalized for ${userName}`, 100, 300);
   mainContext.font = '50px serif';
-  mainContext.fillText(date, 150, 375);
+  mainContext.fillStyle = 'green';
+  mainContext.fillText(`at ${date}`, 150, 375);
+  mainContext.fillStyle = 'red';
   mainContext.font = '40px serif';
   mainContext.fillText('WONT BE EFFECTIVE FOR OTHER VIEWERS!', 100, 450);
+  mainContext.fillStyle = 'white';
   mainContext.fillText('adjusted video is loaded on every play', 100, 525);
   mainContext.fillText('*in order to prevent adoption,', 100, 600);
 }
@@ -68,7 +71,7 @@ Circle.prototype.update = function () {
 };
 
 function drawCircles() {
-  if(!isPlaying) {
+  if (!isPlaying) {
     return;
   }
   for (var i = 0; i < 150; i++) {
@@ -85,7 +88,7 @@ function drawCircles() {
 }
 
 function draw() {
-  if(!isPlaying) {
+  if (!isPlaying) {
     return;
   }
   mainContext.clearRect(0, 0, 1500, 1500);
@@ -98,40 +101,40 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-  function playBrownNoise() {
-    audioContext = new AudioContext();
-    brownNoise = (function () {
-      var lastOut = 0.0;
-      var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
-      node.onaudioprocess = function (e) {
-        var output = e.outputBuffer.getChannelData(0);
-        for (var i = 0; i < bufferSize; i++) {
-          var white = Math.random() * 2 - 0.5;
-          output[i] = (lastOut + 0.02 * white) / 1.02;
-          lastOut = output[i];
-          output[i] *= 0.5; // (roughly) compensate for gain
-        }
-      };
-      return node;
-    })();
+function playBrownNoise() {
+  audioContext = new AudioContext();
+  brownNoise = (function () {
+    var lastOut = 0.0;
+    var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
+    node.onaudioprocess = function (e) {
+      var output = e.outputBuffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) {
+        var white = Math.random() * 2 - 0.5;
+        output[i] = (lastOut + 0.02 * white) / 1.02;
+        lastOut = output[i];
+        output[i] *= 0.5; // (roughly) compensate for gain
+      }
+    };
+    return node;
+  })();
 
-    brownNoise.connect(audioContext.destination);
+  brownNoise.connect(audioContext.destination);
+}
+
+let timeOut;
+
+function play() {
+  if (isPlaying) {
+    return;
   }
-
-  let timeOut;
-
-  function play() {
-    if (isPlaying) {
-      return;
-    }
-    initialDate = new Date().toLocaleString();
-    isPlaying = true;
-    playBrownNoise();
-    drawCircles();
-    timeOut = setTimeout(() => {
-      stop();
-    }, soundLength);
-  }
+  initialDate = new Date().toLocaleString();
+  isPlaying = true;
+  playBrownNoise();
+  drawCircles();
+  timeOut = setTimeout(() => {
+    stop();
+  }, soundLength);
+}
 
 function stop() {
   clearTimeout(timeOut);
