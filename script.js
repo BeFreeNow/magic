@@ -100,9 +100,6 @@ function draw() {
 
   function playBrownNoise() {
     audioContext = new AudioContext();
-    bufferSize = 4096;
-    soundLength = 3000;
-    initialDate = new Date().toLocaleString();
     brownNoise = (function () {
       var lastOut = 0.0;
       var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
@@ -129,6 +126,7 @@ function draw() {
     if (isPlaying) {
       return;
     }
+    initialDate = new Date().toLocaleString();
     isPlaying = true;
     playBrownNoise();
     drawCircles();
