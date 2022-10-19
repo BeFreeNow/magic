@@ -33,9 +33,15 @@ const DEFAULT_DATE = new Date().toLocaleString();
 function personalize(userName = 'Vasili Ivanov', date = DEFAULT_DATE) {
   mainContext.font = '60px serif';
   mainContext.fillStyle = 'white';
-  mainContext.fillText(`Personalized for ${userName}`, 100, 500);
+  mainContext.fillText(`Personalized for ${userName}`, 100, 300);
   mainContext.font = '50px serif';
-  mainContext.fillText(date, 150, 550);
+  mainContext.fillText(date, 150, 375);
+  mainContext.font = '40px serif';
+  mainContext.fillText('WONT BE EFFECTIVE FOR OTHER VIEWERS!', 100, 450);
+  mainContext.fillText('adjusted video is loaded on every play', 100, 525);
+  mainContext.fillText('*in order to prevent adoption,', 100, 600);
+
+
 }
 
 Circle.prototype.update = function () {
@@ -89,8 +95,13 @@ var bufferSize = 4096;
 var soundLength = 3000;
 var audioContext;
 var brownNoise;
+var isPlaying = false;
 
   function playBrownNoise() {
+    if (isPlaying) {
+      return;
+    }
+    isPlaying = true;
     audioContext = new AudioContext();
     bufferSize = 4096;
     soundLength = 3000;
