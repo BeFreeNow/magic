@@ -38,7 +38,7 @@ let initialDate = new Date().toLocaleString();
 function personalize(userName = 'Vasili Ivanov', date = initialDate) {
   mainContext.font = '60px serif';
   mainContext.fillStyle = 'lightgray';
-  mainContext.fillText(`Personalized for ${userName}`, 100, 300);
+  mainContext.fillText(`Personalized for ${userName}`, 100, 250);
   mainContext.font = '40px serif';
   mainContext.fillStyle = 'white';
   mainContext.fillText('WONT BE EFFECTIVE FOR OTHER VIEWERS!', 100, 375);
@@ -46,8 +46,8 @@ function personalize(userName = 'Vasili Ivanov', date = initialDate) {
   mainContext.fillStyle = 'lightgray';
   mainContext.fillText(`updated at ${date}`, 150, 450);
   mainContext.font = '50px serif';
-  mainContext.fillText('*updated video is loaded on every play', 100, 525);
-  mainContext.fillText('to prevent adoption and maximize the effect', 100, 600);
+  mainContext.fillText('*updated on every play, to prevent', 100, 600);
+  mainContext.fillText('adoption and keep the efficiency', 100, 650);
 }
 
 Circle.prototype.update = function () {
