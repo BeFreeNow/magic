@@ -85,25 +85,26 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-var audioContext = new AudioContext();
-var bufferSize = 4096;
-var soundLength = 3000;
-var brownNoise = (function () {
-  var lastOut = 0.0;
-  var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
-  node.onaudioprocess = function (e) {
-    var output = e.outputBuffer.getChannelData(0);
-    for (var i = 0; i < bufferSize; i++) {
-      var white = Math.random() * 2 - 0.5;
-      output[i] = (lastOut + 0.02 * white) / 1.02;
-      lastOut = output[i];
-      output[i] *= 0.5; // (roughly) compensate for gain
-    }
-  };
-  return node;
-})();
 
 function playBrownNoise() {
+  var audioContext = new AudioContext();
+  var bufferSize = 4096;
+  var soundLength = 3000;
+  var brownNoise = (function () {
+    var lastOut = 0.0;
+    var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
+    node.onaudioprocess = function (e) {
+      var output = e.outputBuffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) {
+        var white = Math.random() * 2 - 0.5;
+        output[i] = (lastOut + 0.02 * white) / 1.02;
+        lastOut = output[i];
+        output[i] *= 0.5; // (roughly) compensate for gain
+      }
+    };
+    return node;
+  })();
+  
   brownNoise.connect(audioContext.destination);
   setTimeout(() => {
     stopBrownNoise();
@@ -114,61 +115,5 @@ function stopBrownNoise() {
   brownNoise.disconnect();
 }
 
-function beep() {
-  console.log('beep')
-  var context = new AudioContext();
-  var oscillator = context.createOscillator();
-  oscillator.type = "sine";
-  oscillator.frequency.value = 200;
-  oscillator.connect(context.destination);
-  oscillator.start();
-  // Beep for 500 milliseconds
-  setTimeout(function () {
-    oscillator.stop();
-  }, 250)
-}
-
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const getDate = () => {
-  console.log('getDate')
-  return Date.now();
-}
-async function playBeep() {
-  const end = Date.now() + 5000;
-  while (getDate() < end) {
-    console.log({ isEnd: Date.now() < end, now: Date.now(), end })
-    beep();
-    await wait(500);
-  }
-}
-
-// beep();
-
-var bufferSize = 4096;
-
-function playEffect() {
-  var effect = (function () {
-    var audioContext = new AudioContext();
-    var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
-    node.bits = 4; // between 1 and 16
-    node.normfreq = 0.1; // between 0.0 and 1.0
-    var step = Math.pow(1 / 2, node.bits);
-    var phaser = 0;
-    var last = 0;
-    node.onaudioprocess = function (e) {
-      var input = e.inputBuffer.getChannelData(0);
-      var output = e.outputBuffer.getChannelData(0);
-      for (var i = 0; i < bufferSize; i++) {
-        phaser += node.normfreq;
-        if (phaser >= 1.0) {
-          phaser -= 1.0;
-          last = step * Math.floor(input[i] / step + 0.5);
-        }
-        output[i] = last;
-      }
-    };
-    return node;
-  })();
-}
 
