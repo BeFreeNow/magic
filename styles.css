@@ -8,6 +8,10 @@ canvas {
   height: 100vh;
 }
 
+button{
+  cursor: pointer;
+}
+
 .buttons {
   position: absolute;
   top: 80%;
@@ -18,5 +22,4 @@ canvas {
   justify-content: center;
   width: 500px;
   gap: 24px;
-  cursor: pointer;
 }

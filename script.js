@@ -1,7 +1,12 @@
 var mainCanvas = document.getElementById('myCanvas');
 var mainContext = mainCanvas.getContext('2d');
-
+var isPlaying = false;
 var circles = new Array();
+
+var bufferSize = 4096;
+var soundLength = 15000;
+var audioContext;
+var brownNoise;
 
 var requestAnimationFrame =
   window.requestAnimationFrame ||
@@ -28,9 +33,9 @@ function Circle(radius, speed, width, xPos, yPos) {
   }
 }
 
-const DEFAULT_DATE = new Date().toLocaleString();
+let initialDate = new Date().toLocaleString();
 
-function personalize(userName = 'Vasili Ivanov', date = DEFAULT_DATE) {
+function personalize(userName = 'Vasili Ivanov', date = initialDate) {
   mainContext.font = '60px serif';
   mainContext.fillStyle = 'white';
   mainContext.fillText(`Personalized for ${userName}`, 100, 300);
@@ -40,8 +45,6 @@ function personalize(userName = 'Vasili Ivanov', date = DEFAULT_DATE) {
   mainContext.fillText('WONT BE EFFECTIVE FOR OTHER VIEWERS!', 100, 450);
   mainContext.fillText('adjusted video is loaded on every play', 100, 525);
   mainContext.fillText('*in order to prevent adoption,', 100, 600);
-
-
 }
 
 Circle.prototype.update = function () {
@@ -65,6 +68,9 @@ Circle.prototype.update = function () {
 };
 
 function drawCircles() {
+  if(!isPlaying) {
+    return;
+  }
   for (var i = 0; i < 150; i++) {
     var randomX = Math.round(-100 + Math.random() * 1200);
     var randomY = Math.round(-100 + Math.random() * 1200);
@@ -78,9 +84,10 @@ function drawCircles() {
   draw();
 }
 
-drawCircles();
-
 function draw() {
+  if(!isPlaying) {
+    return;
+  }
   mainContext.clearRect(0, 0, 1500, 1500);
 
   for (var i = 0; i < circles.length; i++) {
@@ -91,20 +98,11 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-var bufferSize = 4096;
-var soundLength = 3000;
-var audioContext;
-var brownNoise;
-var isPlaying = false;
-
   function playBrownNoise() {
-    if (isPlaying) {
-      return;
-    }
-    isPlaying = true;
     audioContext = new AudioContext();
     bufferSize = 4096;
     soundLength = 3000;
+    initialDate = new Date().toLocaleString();
     brownNoise = (function () {
       var lastOut = 0.0;
       var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
@@ -122,12 +120,23 @@ var isPlaying = false;
 
     brownNoise.connect(audioContext.destination);
     setTimeout(() => {
-      stopBrownNoise();
+      stop();
       isPlaying = false;
     }, soundLength);
   }
 
-function stopBrownNoise() {
+  function play() {
+    if (isPlaying) {
+      return;
+    }
+    isPlaying = true;
+    playBrownNoise();
+    drawCircles();
+  }
+
+function stop() {
+  mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+  isPlaying = false;
   brownNoise.disconnect();
 }
 
