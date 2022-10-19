@@ -46,8 +46,8 @@ function personalize(userName = 'Vasili Ivanov', date = initialDate) {
   mainContext.font = '40px serif';
   mainContext.fillText('WONT BE EFFECTIVE FOR OTHER VIEWERS!', 100, 450);
   mainContext.fillStyle = 'white';
-  mainContext.fillText('adjusted video is loaded on every play', 100, 525);
-  mainContext.fillText('*in order to prevent adoption,', 100, 600);
+  mainContext.fillText('*adjusted video is loaded on every play', 100, 525);
+  mainContext.fillText('in order to prevent adoption,', 100, 600);
 }
 
 Circle.prototype.update = function () {
