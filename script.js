@@ -116,11 +116,9 @@ function draw() {
     })();
 
     brownNoise.connect(audioContext.destination);
-    setTimeout(() => {
-      stop();
-      isPlaying = false;
-    }, soundLength);
   }
+
+  let timeOut;
 
   function play() {
     if (isPlaying) {
@@ -130,12 +128,17 @@ function draw() {
     isPlaying = true;
     playBrownNoise();
     drawCircles();
+    timeOut = setTimeout(() => {
+      stop();
+    }, soundLength);
   }
 
 function stop() {
+  clearTimeout(timeOut);
   mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
   isPlaying = false;
   brownNoise.disconnect();
+  location.reload();
 }
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
