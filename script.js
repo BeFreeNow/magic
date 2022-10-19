@@ -85,31 +85,35 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
+var audioContext;
+var bufferSize;
+var soundLength = 3000;
+var brownNoise;
 
-function playBrownNoise() {
-  var audioContext = new AudioContext();
-  var bufferSize = 4096;
-  var soundLength = 3000;
-  var brownNoise = (function () {
-    var lastOut = 0.0;
-    var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
-    node.onaudioprocess = function (e) {
-      var output = e.outputBuffer.getChannelData(0);
-      for (var i = 0; i < bufferSize; i++) {
-        var white = Math.random() * 2 - 0.5;
-        output[i] = (lastOut + 0.02 * white) / 1.02;
-        lastOut = output[i];
-        output[i] *= 0.5; // (roughly) compensate for gain
-      }
-    };
-    return node;
-  })();
-  
-  brownNoise.connect(audioContext.destination);
-  setTimeout(() => {
-    stopBrownNoise();
-  }, soundLength);
-}
+  function playBrownNoise() {
+    audioContext = new AudioContext();
+    bufferSize = 4096;
+    soundLength = 3000;
+    brownNoise = (function () {
+      var lastOut = 0.0;
+      var node = audioContext.createScriptProcessor(bufferSize, 1, 1);
+      node.onaudioprocess = function (e) {
+        var output = e.outputBuffer.getChannelData(0);
+        for (var i = 0; i < bufferSize; i++) {
+          var white = Math.random() * 2 - 0.5;
+          output[i] = (lastOut + 0.02 * white) / 1.02;
+          lastOut = output[i];
+          output[i] *= 0.5; // (roughly) compensate for gain
+        }
+      };
+      return node;
+    })();
+
+    brownNoise.connect(audioContext.destination);
+    setTimeout(() => {
+      stopBrownNoise();
+    }, soundLength);
+  }
 
 function stopBrownNoise() {
   brownNoise.disconnect();
