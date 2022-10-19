@@ -33,9 +33,9 @@ const DEFAULT_DATE = new Date().toLocaleString();
 function personalize(userName = 'Vasili Ivanov', date = DEFAULT_DATE) {
   mainContext.font = '60px serif';
   mainContext.fillStyle = 'white';
-  mainContext.fillText(`Personalized for ${userName}`, 150, 500);
+  mainContext.fillText(`Personalized for ${userName}`, 100, 500);
   mainContext.font = '50px serif';
-  mainContext.fillText(date, 200, 550);
+  mainContext.fillText(date, 150, 550);
 }
 
 Circle.prototype.update = function () {
@@ -85,9 +85,9 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-var audioContext;
-var bufferSize;
+var bufferSize = 4096;
 var soundLength = 3000;
+var audioContext;
 var brownNoise;
 
   function playBrownNoise() {
