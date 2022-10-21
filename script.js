@@ -1,5 +1,5 @@
 var body = document.querySelector('body');
-body.style.backgroundColor = getRandomColor();
+body.style.backgroundColor = getRandomColor(0.3);
 var mainCanvas = document.getElementById('myCanvas');
 var mainContext = mainCanvas.getContext('2d');
 var isPlaying = false;
@@ -26,7 +26,7 @@ function generateRandomColor(){
 }
 
 function invertRgb(r, g, b) {
-  return [255 - r, 255 - g, 255 - b];
+  return `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
 }
 
 
@@ -35,7 +35,7 @@ function invertRgb(r, g, b) {
 
 function getRandomColor(maxOpacity = 0.6) {
 //get random rgba color
-  return `rgba(${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0.01, 0.3)})`;
+  return `rgba(${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0, 255)}, ${getRandom(0.01, maxOpacity)})`;
 }
 
 var requestAnimationFrame =
