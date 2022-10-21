@@ -137,10 +137,9 @@ function play() {
 }
 
 function stop() {
-  if (!brownNoise || !mainContext) return 
-    clearTimeout(timeOut);
-  mainContext?.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+  clearTimeout(timeOut);
   isPlaying = false;
+  mainContext?.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
   brownNoise?.disconnect();
   location.reload();
 }
