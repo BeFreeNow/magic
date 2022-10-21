@@ -1,5 +1,5 @@
 body {
-  background: #16052bde;
+  background: #1b123ade;
   overflow: hidden;
 }
 
@@ -8,17 +8,19 @@ canvas {
   height: 100vh;
 }
 
-button{
+button {
   cursor: pointer;
   padding: 4px 16px;
   border-radius: 16px;
+  width: 31%;
+  height: 60px;
 }
 
 .buttons {
   position: absolute;
   bottom: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 70%;
+  transform: translate(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
